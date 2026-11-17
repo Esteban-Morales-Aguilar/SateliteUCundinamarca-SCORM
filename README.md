@@ -68,6 +68,45 @@ El paquete ya incluye la instantánea, así que **no hace falta ejecutarlo** par
 No se envían `cmi.core.score.*` porque la actividad no evalúa. Fuera de un LMS el
 paquete funciona igual, pero no reporta nada (el módulo queda inerte).
 
+## Cambiar el video (o cualquier imagen)
+
+El video no está codificado en el HTML: se referencia por ruta (`asset('media/…')`),
+así que reemplazar el archivo es todo lo que hace falta.
+
+1. Sustituya `public/media/estratosat-telco-despliegue.mp4` por el nuevo video
+   **con el mismo nombre**. Actualice también
+   `public/media/estratosat-telco-miniatura.webp` si cambia la portada.
+2. Si prefiere otro nombre de archivo, cambie la ruta en `src/screens/Video.tsx`
+   (y en ningún otro sitio).
+3. Recompile: `npm run build`. Eso regenera `dist/`, el `imsmanifest.xml` y el ZIP
+   en `release/` (mismo nombre, contenido nuevo).
+4. Haga commit del video **y** del ZIP, y suba el nuevo ZIP a Moodle: en la
+   actividad SCORM, *Editar ajustes → Paquete → Subir un paquete* reemplaza el
+   anterior y conserva las notas de los estudiantes.
+
+Recomendaciones de formato:
+
+- **MP4 con H.264 + AAC**, que es lo que reproducen todos los navegadores.
+- `-movflags +faststart` para que empiece a reproducirse sin descargarlo entero.
+- 720p y ~10–30 MB es suficiente para una pantalla dentro del LMS.
+
+```bash
+ffmpeg -i entrada.mov -vf "scale=-2:720" \
+  -c:v libx264 -preset slow -crf 23 \
+  -c:a aac -b:a 128k -movflags +faststart \
+  public/media/estratosat-telco-despliegue.mp4
+```
+
+Límites a tener en cuenta:
+
+| Límite | Valor | Qué hacer |
+| --- | --- | --- |
+| Archivo por archivo en GitHub | 100 MB | Si el video lo supera, Git LFS o un Release adjunto |
+| Subida en Moodle | `filemaxsize` del sitio | Pedir al administrador que lo suba, o comprimir más |
+
+El mismo procedimiento sirve para `public/media/globosatelite.webp` y
+`public/assets/imagen-presentacion.png`: se reemplazan y se recompila.
+
 ## Estructura
 
 ```
