@@ -38,7 +38,7 @@ npm run build      # tsc + Vite + imsmanifest.xml + ZIP
 | Salida | Qué es |
 | --- | --- |
 | `dist/` | Paquete descomprimido (para revisar o servir) |
-| `release/satelitecundinamarca-odc-scorm12.zip` | Archivo listo para subir a Moodle |
+| `release/satelitecundinamarca-odc-scorm12.zip` | Archivo listo para subir a Moodle (incluido en el repositorio) |
 
 `npm run snapshot` vuelve a congelar el contenido y la telemetría desde
 `https://satelitecundinamarca.duckdns.org/api/v1` y reescribe `src/content.ts`.
