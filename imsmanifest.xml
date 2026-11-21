@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SpaceNet Lab — Objeto Digital de Conocimiento (ODC)
+  Universidad de Cundinamarca · Especialización en Infraestructura y Seguridad de Redes
+  Empaquetado SCORM 1.2 · una SCO (index.html) · 10 pantallas
+  Licencia CC BY-NC-SA 4.0
+-->
+<manifest identifier="SPACENET-LAB-ODC-SCORM12" version="1.0"
+  xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+  xmlns:lom="http://ltsc.ieee.org/xsd/LOM"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                      http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd
+                      http://ltsc.ieee.org/xsd/LOM lomv1.0.xsd">
+
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+    <lom:lom>
+      <lom:general>
+        <lom:title>
+          <lom:string language="es">SpaceNet Lab: Diseño, Simulación y Seguridad de Redes Inalámbricas para CubeSats y CanSat Educativos</lom:string>
+        </lom:title>
+        <lom:language>es</lom:language>
+        <lom:description>
+          <lom:string language="es">Objeto Digital de Conocimiento de la Universidad de Cundinamarca: 10 pantallas sobre comunicaciones inalámbricas de largo alcance (LoRa y LoRaWAN), efecto Doppler, redundancia y seguridad en satélites educativos.</lom:string>
+        </lom:description>
+        <lom:keyword><lom:string language="es">LoRa</lom:string></lom:keyword>
+        <lom:keyword><lom:string language="es">LoRaWAN</lom:string></lom:keyword>
+        <lom:keyword><lom:string language="es">CubeSat</lom:string></lom:keyword>
+        <lom:keyword><lom:string language="es">CanSat</lom:string></lom:keyword>
+        <lom:keyword><lom:string language="es">seguridad inalámbrica</lom:string></lom:keyword>
+      </lom:general>
+      <lom:lifeCycle>
+        <lom:version><lom:string language="es">1.0</lom:string></lom:version>
+        <lom:contribute>
+          <lom:role><lom:value>author</lom:value></lom:role>
+          <entity><vcard>FN:Esteban Morales Aguilar</vcard></entity>
+          <entity><vcard>FN:Darikson Felipe Pérez Rodríguez</vcard></entity>
+          <lom:date><lom:dateTime>2026-11-21</lom:dateTime></lom:date>
+        </lom:contribute>
+      </lom:lifeCycle>
+      <lom:rights>
+        <lom:copyrightAndOtherRestrictions><lom:value>yes</lom:value></lom:copyrightAndOtherRestrictions>
+        <lom:description>
+          <lom:string language="es">Creative Commons BY-NC-SA 4.0 (Atribución, NoComercial, CompartirIgual)</lom:string>
+        </lom:description>
+      </lom:rights>
+    </lom:lom>
+  </metadata>
+
+  <organizations default="ORG-SPACENET">
+    <organization identifier="ORG-SPACENET" structure="hierarchical">
+      <title>SpaceNet Lab — ODC</title>
+      <item identifier="ITEM-ODC" identifierref="RES-ODC" isvisible="true">
+        <title>SpaceNet Lab: Diseño, Simulación y Seguridad de Redes Inalámbricas para CubeSats y CanSat Educativos</title>
+      </item>
+    </organization>
+  </organizations>
+
+  <resources>
+    <resource identifier="RES-ODC" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      <file href="assets/app.js"/>
+      <file href="assets/ibm-plex-mono-400-latin-ext.woff2"/>
+      <file href="assets/ibm-plex-mono-400-latin.woff2"/>
+      <file href="assets/ibm-plex-mono-500-latin-ext.woff2"/>
+      <file href="assets/ibm-plex-mono-500-latin.woff2"/>
+      <file href="assets/ibm-plex-mono-600-latin-ext.woff2"/>
+      <file href="assets/ibm-plex-mono-600-latin.woff2"/>
+      <file href="assets/imagen-presentacion.png"/>
+      <file href="assets/inter-latin-ext.woff2"/>
+      <file href="assets/inter-latin.woff2"/>
+      <file href="assets/style.css"/>
+      <file href="favicon.svg"/>
+      <file href="index.html"/>
+      <file href="media/estratosat-telco-despliegue.mp4"/>
+      <file href="media/estratosat-telco-miniatura.webp"/>
+      <file href="media/globosatelite.webp"/>
+</resource>
+  </resources>
+</manifest>
