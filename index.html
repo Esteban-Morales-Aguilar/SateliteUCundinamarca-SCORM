@@ -14,6 +14,66 @@
       html, body { margin: 0; background: #f6f8fb; }
       html.dark, html.dark body { background: #0a1220; }
     </style>
+    <!-- Fallback para vistas previas (GitHub Pages, servidor local): si no hay
+         API SCORM en la cadena de ventanas, se muestra un aviso no bloqueante. -->
+    <script>
+      (function () {
+        'use strict';
+        var MAX_DEPTH = 12;
+        function findApi(start) {
+          var visited = new Set();
+          var current = start;
+          while (current && visited.size < MAX_DEPTH) {
+            if (visited.has(current)) break;
+            visited.add(current);
+            try {
+              var cand = current.API;
+              if (cand && typeof cand.LMSInitialize === 'function') return cand;
+            } catch (e) { break; }
+            if (current.parent === current) break;
+            current = current.parent;
+          }
+          try {
+            var opener = start.opener;
+            if (opener && !visited.has(opener)) {
+              var cand2 = opener.API;
+              if (cand2 && typeof cand2.LMSInitialize === 'function') return cand2;
+            }
+          } catch (e) { /* sin acceso a la ventana de apertura */ }
+          return null;
+        }
+        if (findApi(window)) return; // LMS presente: no mostrar aviso
+
+        try { if (sessionStorage.getItem('scormPreviewBannerDismissed') === '1') return; } catch (e) {}
+
+        function show() {
+          if (!document.body) return;
+          var banner = document.createElement('div');
+          banner.id = 'scorm-preview-banner';
+          banner.setAttribute('role', 'status');
+          banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#1e3a5f;color:#f8fafc;padding:10px 16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:13px;line-height:1.4;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.35);';
+          var msg = document.createElement('span');
+          msg.textContent = 'Este ODC se visualiza mejor en un LMS. En GitHub Pages se muestra en modo vista previa (sin tracking SCORM).';
+          var btn = document.createElement('button');
+          btn.textContent = 'Cerrar';
+          btn.style.cssText = 'background:transparent;border:1px solid #f8fafc;color:#f8fafc;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;flex-shrink:0;';
+          btn.addEventListener('click', function () {
+            banner.remove();
+            document.body.style.paddingTop = '';
+            try { sessionStorage.setItem('scormPreviewBannerDismissed', '1'); } catch (e) {}
+          });
+          banner.appendChild(msg);
+          banner.appendChild(btn);
+          document.body.insertBefore(banner, document.body.firstChild);
+          document.body.style.paddingTop = banner.offsetHeight + 'px';
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', show);
+        } else {
+          show();
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

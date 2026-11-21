@@ -30,19 +30,43 @@ y el simulador viajan dentro del paquete y funcionan sin conexión.
 
 ```bash
 npm ci
-npm run dev        # desarrollo en http://localhost:5174
-npm test           # 37 pruebas (wrapper SCORM + render de las 10 pantallas)
-npm run build      # tsc + Vite + imsmanifest.xml + ZIP
+npm run dev          # desarrollo en http://localhost:5174
+npm test             # 32 pruebas (wrapper SCORM + render de las 10 pantallas)
+npm run build        # tsc + Vite + imsmanifest.xml + ZIP estándar
+npm run build:preview # tsc + Vite IIFE + manifiesto + ZIP portable
 ```
 
 | Salida | Qué es |
 | --- | --- |
-| `dist/` | Paquete descomprimido (para revisar o servir) |
+| `dist/` | Paquete descomprimido (módulos ES), para Moodle/LMS |
+| `dist-preview/` | Sitio portable (script clásico), para abrir sin servidor y para GitHub Pages |
 | `release/satelitecundinamarca-odc-scorm12.zip` | Archivo listo para subir a Moodle (incluido en el repositorio) |
+| `release/satelitecundinamarca-odc-scorm12-portable.zip` | Igual, pero el `index.html` se puede abrir con doble clic (incluido en el repositorio) |
 
 `npm run snapshot` vuelve a congelar el contenido y la telemetría desde
 `https://satelitecundinamarca.duckdns.org/api/v1` y reescribe `src/content.ts`.
 El paquete ya incluye la instantánea, así que **no hace falta ejecutarlo** para compilar.
+
+## Ver en línea (GitHub Pages)
+
+<https://Esteban-Morales-Aguilar.github.io/SateliteUCundinamarca-SCORM/>
+
+GitHub Actions compila `dist-preview/` y lo publica en Pages tras cada push a `main`
+(`.github/workflows/pages.yml`). Sin LMS no hay API SCORM, así que la página añade un
+aviso no bloqueante: el contenido y la navegación funcionan completos, pero no se
+registra progreso. Para el seguimiento real, importe el ZIP en Moodle.
+
+## Abrir sin servidor (doble clic)
+
+El build estándar usa módulos ES, que los navegadores bloquean bajo `file://`.
+Por eso existe la variante portable:
+
+1. Descomprima `release/satelitecundinamarca-odc-scorm12-portable.zip`.
+2. Abra `index.html` con Chrome, Edge o Firefox.
+
+El bundle va como script clásico (IIFE), así que se renderiza sin servidor y sigue
+siendo un SCORM 1.2 válido (`imsmanifest.xml` en la raíz del paquete).
+
 
 ## Importar en Moodle
 
@@ -124,7 +148,12 @@ src/
 public/                 video, imágenes y favicon
 scripts/
   snapshot.mjs          genera src/content.ts desde el API del ODC
-  build.mjs             build + imsmanifest.xml + ZIP
+  build.mjs             build + imsmanifest.xml + ZIP estándar
+  build-preview.mjs     build IIFE + manifiesto + ZIP portable
+vite.config.ts          build estándar (módulos ES) para Moodle
+vite.config.preview.ts  build portable (IIFE) para file:// y GitHub Pages
+.github/workflows/
+  pages.yml             compila y publica dist-preview/ en GitHub Pages
 ```
 
 ## Decisiones de diseño
@@ -148,8 +177,10 @@ scripts/
 ```bash
 npx tsc --noEmit
 npm test
-xmllint --noout dist/imsmanifest.xml
+npm run build:preview
+xmllint --noout dist/imsmanifest.xml dist-preview/imsmanifest.xml
 unzip -l release/satelitecundinamarca-odc-scorm12.zip
+unzip -l release/satelitecundinamarca-odc-scorm12-portable.zip
 ```
 
 Las pruebas cubren el descubrimiento de la API en la cadena de ventanas, el arranque
